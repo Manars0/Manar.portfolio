@@ -8,6 +8,8 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project }: ProjectCardProps) {
+    const hasLink = Boolean(project.link);
+    const hasDetails = Boolean(project.details);
   return (
     <motion.article
       initial={{ opacity: 0, y: 40 }}
@@ -36,9 +38,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Title */}
         <div className="max-w-4xl">
-          <h2 className="text-[clamp(1.9rem,2.6vw,2.5rem)] leading-[1.05] tracking-[-0.03em] text-[#111]">
+          <h4 className="text-[28px] font-semibold leading-[1.05] tracking-[-0.04em] text-[#111]">
             {project.title}
-          </h2>
+          </h4>
 
           <p className="mt-5 text-[15px] leading-[1.9] text-neutral-600 md:text-[16px]">
             {project.description}
@@ -58,77 +60,73 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         {/* Link */}
-        <div className="flex flex-col items-start gap-4 pt-2">
-          {project.link ? (
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex items-center gap-2 text-[15px] text-[#E85D2A] transition"
-            >
-              View Project
-              <ExternalLink
-                size={16}
-                className="transition-transform group-hover:translate-x-1"
+{(hasLink || hasDetails) && (
+  <div className="flex flex-col items-start gap-3 pt-2">
+
+    {hasLink && (
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noreferrer"
+        className="group inline-flex items-center gap-2 text-[15px] text-[#E85D2A] transition"
+      >
+        View Project
+
+        <ExternalLink
+          size={16}
+          className="transition-transform group-hover:translate-x-1"
+        />
+      </a>
+    )}
+
+    {hasDetails && (
+      <Accordion
+        title="View Design Details +"
+        summary=""
+      >
+        <div className="mt-8 flex flex-col gap-10">
+
+          <div className="max-w-3xl">
+            <h3 className="text-[16px] font-semibold text-[#111]">
+              {project.details?.title}
+            </h3>
+
+            <p className="mt-4 text-[15px] leading-[1.9] text-neutral-500">
+              {project.details?.description}
+            </p>
+          </div>
+
+          {project.details?.imageId ? (
+            <div className="overflow-hidden rounded-[1.8rem]">
+              <img
+                src={project.details.imageId}
+                alt={project.details.title}
+                className="w-full object-contain"
               />
-            </a>
-          ) : (
-            <button
-              type="button"
-              className="group inline-flex items-center gap-2 text-[15px] text-[#E85D2A]"
-            >
-              View Project
-              <ArrowRight
-                size={16}
-                className="transition-transform group-hover:translate-x-1"
-              />
-            </button>
-          )}
-
-          {/* Design Details */}
-          {project.details ? (
-            <Accordion
-              title="View Design Details +"
-              summary=""
-            >
-              <div className="mt-8 flex flex-col gap-10">
-                <div className="max-w-3xl">
-                  <h3 className="text-[16px] font-semibold text-[#111]">
-                    {project.details.title}
-                  </h3>
-
-                  <p className="mt-4 text-[15px] leading-[1.9] text-neutral-500">
-                    {project.details.description}
-                  </p>
-                </div>
-
-                {project.details.imageId ? (
-                  <div className="overflow-hidden rounded-[1.8rem]">
-                    <img
-                      src={project.details.imageId}
-                      alt={project.details.title}
-                      className="w-full object-contain"
-                    />
-                  </div>
-                ) : null}
-
-                {project.details.highlights?.length ? (
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {project.details.highlights.map((item: string) => (
-                      <div
-                        key={item}
-                        className="rounded-2xl bg-[#f5f5f3] px-5 py-4 text-[14px] leading-7 text-neutral-600"
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            </Accordion>
+            </div>
           ) : null}
+
+          {project.details?.highlights?.length ? (
+            <div className="grid gap-4 md:grid-cols-2">
+              {project.details.highlights.map((item: string) => (
+                <div
+                  key={item}
+                  className="rounded-2xl bg-[#f5f5f3] px-5 py-4 text-[14px] leading-7 text-neutral-600"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          ) : null}
+
         </div>
-      </div>
+      </Accordion>
+    )}
+
+  </div>
+)}
+
+        </div>
     </motion.article>
   );
 }

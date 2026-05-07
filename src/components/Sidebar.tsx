@@ -36,7 +36,7 @@ export function Sidebar() {
         className="flex h-full flex-col "
       >
         <div>
-          <h1 className="text-[42px] font-semibold leading-[1.05] tracking-[-0.04em] text-[#111]">
+          <h1 className="text-[30px] font-semibold leading-[1.05] tracking-[-0.04em] text-[#111]">
             {profileName}
           </h1>
 
